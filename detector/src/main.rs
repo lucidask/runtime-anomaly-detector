@@ -124,7 +124,7 @@ fn main() {
 
     let output_path = format!("../experiments/output/report_{}.md", input_file);
 
-    if let Err(err) = run(input_path, output_path) {
+    if let Err(err) = run(input_path, &output_path) {
         eprintln!("Error: {}", err);
         std::process::exit(1);
     }
