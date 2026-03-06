@@ -1,0 +1,12 @@
+# Rust
+target/
+
+# logs et traces
+experiments/traces/*.log
+
+# rapports générés
+experiments/output/*.md
+
+# fichiers temporaires
+*.tmp
+*.log
