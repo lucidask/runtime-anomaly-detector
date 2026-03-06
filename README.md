@@ -1,5 +1,7 @@
 # Runtime Anomaly Detector
 
+Prototype développé dans le cadre du cours de Sécurité Logicielle.
+
 ## Description
 Ce projet vise à développer un prototype capable de détecter des activités anormales à l’exécution d’un programme Linux à partir de l’analyse de ses appels système.
 
