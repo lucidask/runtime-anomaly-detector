@@ -80,6 +80,30 @@ runtime-anomaly-detector
 
 
 ---
+# Prérequis
+
+Pour utiliser ce prototype, les outils suivants doivent être installés :
+
+- **Linux** (le projet a été testé sous Ubuntu)
+- **Rust** (installé via `rustup`)
+- **cargo** (gestionnaire de compilation Rust)
+- **strace** (outil de capture des appels système)
+- **gcc** (pour compiler les programmes de test)
+
+---
+
+# Installation
+
+Cloner le dépôt :
+
+```bash
+git clone https://github.com/lucidask/runtime-anomaly-detector.git
+cd runtime-anomaly-detector
+
+Compiler le détecteur :
+
+cd detector
+cargo build
 
 # Générer une trace
 
