@@ -39,6 +39,7 @@ pub enum MemoryErrorKind {
 
 #[derive(Debug, Clone)]
 pub struct MemoryEvent {
+    pub pid: u32,
     pub kind: MemoryErrorKind,
     pub raw_line: String,
     pub location: Option<String>,

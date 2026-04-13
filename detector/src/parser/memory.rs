@@ -20,6 +20,7 @@ pub fn parse_memory_log(content: &str) -> Vec<MemoryEvent> {
 
             let location = extract_location(&lines, i);
             events.push(MemoryEvent {
+                pid: extract_pid(line).unwrap_or(0),
                 kind,
                 raw_line: line.to_string(),
                 location,
@@ -40,6 +41,7 @@ pub fn parse_memory_log(content: &str) -> Vec<MemoryEvent> {
 
             let location = extract_location(&lines, i);
             events.push(MemoryEvent {
+                pid: extract_pid(line).unwrap_or(0),
                 kind,
                 raw_line: line.to_string(),
                 location,
@@ -48,6 +50,7 @@ pub fn parse_memory_log(content: &str) -> Vec<MemoryEvent> {
 
             let location = extract_location(&lines, i);
             events.push(MemoryEvent {
+                pid: extract_pid(line).unwrap_or(0),
                 kind: MemoryErrorKind::InvalidFree,
                 raw_line: line.to_string(),
                 location,
@@ -57,6 +60,7 @@ pub fn parse_memory_log(content: &str) -> Vec<MemoryEvent> {
         {
             let location = extract_location(&lines, i);
             events.push(MemoryEvent {
+                pid: extract_pid(line).unwrap_or(0),
                 kind: MemoryErrorKind::UninitialisedValue,
                 raw_line: line.to_string(),
                 location,
@@ -67,6 +71,7 @@ pub fn parse_memory_log(content: &str) -> Vec<MemoryEvent> {
         {
             let location = extract_location(&lines, i);
             events.push(MemoryEvent {
+                pid: extract_pid(line).unwrap_or(0),
                 kind: MemoryErrorKind::StackOverflow,
                 raw_line: line.to_string(),
                 location,
@@ -105,6 +110,20 @@ fn extract_location(lines: &[&str], index: usize) -> Option<String> {
                         if fallback.is_none() {
                             fallback = Some(formatted);
                         }
+
+                        continue;
+                    }
+                }
+
+                if let Some(path) = location.strip_prefix("in ") {
+                    let formatted = path.trim().to_string();
+
+                    if is_user_code_file(&formatted) {
+                        return Some(formatted);
+                    }
+
+                    if fallback.is_none() {
+                        fallback = Some(formatted);
                     }
                 }
             }
@@ -140,4 +159,13 @@ fn is_user_code_file(file: &str) -> bool {
     ];
 
     !system_markers.iter().any(|marker| lower.contains(marker))
+}
+
+fn extract_pid(line: &str) -> Option<u32> {
+    if let Some(rest) = line.strip_prefix("==") {
+        if let Some(end) = rest.find("==") {
+            return rest[..end].trim().parse::<u32>().ok();
+        }
+    }
+    None
 }

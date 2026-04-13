@@ -20,7 +20,7 @@ pub fn apply_memory_rules(events: &[MemoryEvent]) -> Vec<Alert> {
       alerts.push(Alert {
         severity,
         message,
-        pid: 0,
+        pid: event.pid,
         raw_line: event.raw_line.clone(),
         occurrences: 1,
         evidence: vec![event.raw_line.clone()],
